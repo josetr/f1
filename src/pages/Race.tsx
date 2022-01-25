@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import List from './List'
-import { Loading } from './Loading';
-import Error from './Error';
-import { RaceTable, RaceResult } from './Models'
-import { fetchRaceResults } from './Service';
+import List from '../components/List'
+import { Loading } from '../components/Loading';
+import Error from '../components/Error';
+import { RaceTable, RaceResult } from '../models/Models'
+import { fetchRaceResults } from '../services/F1Service';
 
 function toSeconds(msx: string) {
 	if (msx.length === 0)

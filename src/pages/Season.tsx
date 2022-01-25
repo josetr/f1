@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import List from './List'
-import { Loading } from './Loading';
-import Error from './Error';
-import { RaceTable, Race } from './Models'
-import { fetchSeasonRaceTable } from './Service';
+import List from '../components/List'
+import { Loading } from '../components/Loading';
+import Error from '../components/Error';
+import { RaceTable, Race } from '../models/Models'
+import { fetchSeasonRaceTable } from '../services/F1Service';
 
 function Seasons({ match }: RouteComponentProps<{ season: string }>) {
 	const [raceTable, setRaceTable] = useState<RaceTable | null>();

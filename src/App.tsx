@@ -1,16 +1,16 @@
 import { BrowserRouter as Router, Switch, Route, NavLink } from "react-router-dom";
 import './App.scss';
-import Circuits from './Circuits'
-import Circuit from './Circuit'
-import Drivers from './Drivers';
-import Driver from './Driver';
-import Seasons from "./Seasons";
-import Season from "./Season";
-import Constructors from "./Constructors";
-import Constructor from "./Constructor";
-import Races from "./Races";
-import Race from "./Race";
-import Home from "./Home";
+import Circuits from './pages/Circuits'
+import Circuit from './pages/Circuit'
+import Drivers from './pages/Drivers';
+import Driver from './pages/Driver';
+import Seasons from "./pages/Seasons";
+import Season from "./pages/Season";
+import Constructors from "./pages/Constructors";
+import Constructor from "./pages/Constructor";
+import Races from "./pages/Races";
+import Race from "./pages/Race";
+import Home from "./pages/Home";
 
 function App() {
   return (

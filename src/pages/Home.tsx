@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { LoadingEllipsis } from "./Loading";
-import { Driver, Constructor } from "./Models";
-import { get } from "./Service";
+import { LoadingEllipsis } from "../components/Loading";
+import { Driver, Constructor } from "../models/Models";
+import { get } from "../services/F1Service";
 
 function Home() {
 	const [fastest, setFastest] = useState<Driver | null>()

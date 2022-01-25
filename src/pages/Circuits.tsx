@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import List from './List'
-import { Loading } from './Loading';
-import Error from './Error';
-import { Circuit, CircuitTable } from './Models'
-import { fetchCircuitTable } from './Service';
+import List from '../components/List'
+import { Loading } from '../components/Loading';
+import Error from '../components/Error';
+import { Circuit, CircuitTable } from '../models/Models'
+import { fetchCircuitTable } from '../services/F1Service';
 
 function Circuits() {
 	const [circuitTable, setCircuitTable] = useState<CircuitTable | null>();

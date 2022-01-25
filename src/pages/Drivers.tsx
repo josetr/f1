@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import List from './List'
-import { Loading } from './Loading';
-import Error from './Error';
-import { DriverStanding, StandingsEntry } from './Models'
-import { fetchDriverStandings } from './Service';
+import List from '../components/List'
+import { Loading } from '../components/Loading';
+import Error from '../components/Error';
+import { DriverStanding, StandingsEntry } from '../models/Models'
+import { fetchDriverStandings } from '../services/F1Service';
 
 function Drivers() {
 	const [drivers, setDrivers] = useState<StandingsEntry | null>();

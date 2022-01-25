@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CircuitTable, ConstructorTable, DriverTable, Ergast, RaceTable, SeasonTable, StandingsTable } from "./Models";
+import { CircuitTable, ConstructorTable, DriverTable, Ergast, RaceTable, SeasonTable, StandingsTable } from "../models/Models";
 
 export const apiUrl = "https://ergast.com/api/f1"
 

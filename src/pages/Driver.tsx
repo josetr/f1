@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { DriverTable, StandingsTable } from './Models'
+import { DriverTable, StandingsTable } from '../models/Models'
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { LoadingEllipsis } from './Loading';
-import { fetchDriver, get } from './Service';
+import { LoadingEllipsis } from '../components/Loading';
+import { fetchDriver, get } from '../services/F1Service';
 
 function DriverComponent({ match }: RouteComponentProps<{ driver: string }>) {
 	const [table, setTable] = useState<StandingsTable>();

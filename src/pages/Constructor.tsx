@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { LoadingEllipsis } from './Loading';
-import { ConstructorTable, StandingsTable } from './Models'
-import { fetchConstructorStandings, fetchConstructorTable } from './Service';
+import { LoadingEllipsis } from '../components/Loading';
+import { ConstructorTable, StandingsTable } from '../models/Models'
+import { fetchConstructorStandings, fetchConstructorTable } from '../services/F1Service';
 
 function Constructors({ match }: RouteComponentProps<{ constructor: string }>) {
 	const [constructorTable, setConstructorTable] = useState<ConstructorTable | null>();

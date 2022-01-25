@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Loading } from './Loading';
-import Error from './Error';
-import { CircuitTable, Circuit } from './Models'
-import { fetchCircuitTable } from './Service';
+import { Loading } from '../components/Loading';
+import Error from '../components/Error';
+import { CircuitTable, Circuit } from '../models/Models'
+import { fetchCircuitTable } from '../services/F1Service';
 
 function CircuitComponent({ match }: RouteComponentProps<{ circuit: string }>) {
 	const [circuitTable, setCircuitTable] = useState<CircuitTable | null>();

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import List from './List'
-import { Loading } from './Loading';
-import Error from './Error';
-import { Constructor, ConstructorTable } from './Models'
-import { fetchConstructorTable } from './Service';
+import List from '../components/List'
+import { Loading } from '../components/Loading';
+import Error from '../components/Error';
+import { Constructor, ConstructorTable } from '../models/Models'
+import { fetchConstructorTable } from '../services/F1Service';
 
 function Constructors() {
 	const [constructorTable, setConstructorTable] = useState<ConstructorTable | null>();
