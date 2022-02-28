@@ -15,7 +15,7 @@ function DriverComponent({ match }: RouteComponentProps<{ driver: string }>) {
 
 		get(`drivers/${match.params.driver}/driverStandings.json`)
 			.then(ergast => {
-				var table = ergast.data.MRData.StandingsTable
+				const table = ergast.data.MRData.StandingsTable
 				table.StandingsLists.sort((a, b) => b.season - a.season);
 				return setTable(table);
 			})

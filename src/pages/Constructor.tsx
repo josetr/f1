@@ -23,7 +23,7 @@ function Constructors({ match }: RouteComponentProps<{ constructor: string }>) {
 			.catch(_ => setConstructorStanding(null))
 	}, [match.params.constructor]);
 
-	var constructor = constructorTable?.Constructors[0]
+	const constructor = constructorTable?.Constructors[0]
 
 	return <>
 		<div className="card">

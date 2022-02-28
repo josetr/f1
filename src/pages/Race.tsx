@@ -9,7 +9,7 @@ import { fetchRaceResults } from '../services/F1Service';
 function toSeconds(msx: string) {
 	if (msx.length === 0)
 		return 0
-	var parts = msx.split(':');
+	const parts = msx.split(':');
 	return parseInt(parts[0]) * 60 + parseFloat(parts[1])
 }
 
@@ -21,7 +21,7 @@ function RaceComponent({ match }: RouteComponentProps<{ season: string, race: st
 		if (!raceTable)
 			return
 
-		for (let result of raceTable.Races[0].Results) {
+		for (const result of raceTable.Races[0].Results) {
 			if (result.FastestLap) {
 				if (toSeconds(result.FastestLap.Time.time) < toSeconds(fastest))
 					fastest = result.FastestLap.Time.time + ` (${result.Driver.givenName} ${result.Driver.familyName}) `
