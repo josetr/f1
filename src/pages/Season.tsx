@@ -22,8 +22,6 @@ function Seasons({ match }: RouteComponentProps<{ season: string }>) {
     <div>Date: {race.date} {race.time}</div>
   </div>
 
-  console.log(raceTable)
-
   return <>
     <h1>{raceTable?.season ?? match.params.season} Formula 1 World Championship</h1>
     {raceTable === undefined && <Loading />}
