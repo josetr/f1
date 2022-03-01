@@ -15,11 +15,11 @@ function Drivers() {
       .catch(_ => setDrivers(null));
   }, []);
 
-  const renderer = (standing: DriverStanding) => <div style={{ display: "flex" }}>
+  const renderer = (standing: DriverStanding) => <div className="list-item">
     <div>
-      <Link to={`/drivers/${standing.Driver.driverId}`} style={{ padding: "6px", display: "inline-block" }}>#{standing.position}</Link>
+      <Link to={`/drivers/${standing.Driver.driverId}`} className="list-item-no">#{standing.position}</Link>
     </div>
-    <div style={{ flex: "1" }}>
+    <div className="expand">
       <div><Link to={`/drivers/${standing.Driver.driverId}`}>{standing.Driver.givenName} {standing.Driver.familyName} ({standing.points})</Link></div>
       <div>Nationality: {standing.Driver.nationality}</div>
     </div>

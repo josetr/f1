@@ -67,11 +67,32 @@ table {
   background: #000000dd;
   display: inline-block;
   min-width: 255px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   padding: 7px;
 
   a {
     color: orange;
   }
+}
+
+.card.title {
+  padding: 10px;
+  font-size: 18px;
+}
+
+.list-item {
+  display: flex;
+  padding: 4px;
+}
+
+.list-item-no {
+  padding: 6px;
+  display: inline-block;
+}
+
+.black {
+  color: black;
 }
 
 h1 {
@@ -90,4 +111,12 @@ h1 {
     display: inline-block;
     margin: 10px;
   }
+}
+
+.flex {
+  display: flex;
+}
+
+.expand {
+  flex: 1;
 }

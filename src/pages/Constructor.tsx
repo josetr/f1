@@ -35,7 +35,7 @@ function Constructors({ match }: RouteComponentProps<{ constructor: string }>) {
       </div>
       Nationality: {constructor?.nationality ?? "Unknown"}
     </div>
-    <table style={{ margin: "15px" }}>
+    <table>
       <thead>
         <tr><td>Season</td><td>Points</td><td>Wins</td></tr>
       </thead>

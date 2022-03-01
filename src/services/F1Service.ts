@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CircuitTable, ConstructorTable, DriverTable, Ergast, RaceTable, SeasonTable, StandingsTable } from "../models/Models";
+import { CircuitTable, Constructor, ConstructorTable, Driver, DriverTable, Ergast, RaceTable, SeasonTable, StandingsTable } from "../models/Models";
 
 export const apiUrl = "https://ergast.com/api/f1"
 
@@ -65,4 +65,29 @@ export async function fetchRaceResults(season: string, race: string): Promise<Ra
     season = "current"
   const response = await get(`${season}/${race}/results.json`);
   return response.data.MRData.RaceTable;
+}
+
+export async function fetchConstructorLeader(): Promise<Constructor> {
+  const response = await get(`current/last/constructorStandings.json?limit=1`);
+  return response.data.MRData.StandingsTable.StandingsLists[0]?.ConstructorStandings[0]?.Constructor;
+}
+
+export async function fetchDriverLeader(): Promise<Driver> {
+  const response = await get(`current/last/driverStandings.json?limit=1`)
+  return response.data.MRData.StandingsTable.StandingsLists[0]?.DriverStandings[0]?.Driver;
+}
+
+export async function fetchLastPole(): Promise<Driver> {
+  const response = await get(`current/last/qualifying.json?limit=1`)
+  return response.data.MRData.RaceTable.Races[0]?.QualifyingResults[0]?.Driver;
+}
+
+export async function fetchLastWinner(): Promise<Driver> {
+  const response = await get(`current/last/results.json?limit=1`)
+  return response.data.MRData.RaceTable.Races[0]?.Results[0]?.Driver;
+}
+
+export async function fetchFastestLap(): Promise<Driver> {
+  const response = await get(`current/last/fastest/1/results.json?limit=1`)
+  return response.data.MRData.RaceTable.Races[0]?.Results[0]?.Driver;
 }

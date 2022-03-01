@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { LoadingEllipsis } from "../components/Loading";
 import { Driver, Constructor } from "../models/Models";
-import { get } from "../services/F1Service";
+import { fetchConstructorLeader, fetchDriverLeader, fetchFastestLap, fetchLastPole, fetchLastWinner } from "../services/F1Service";
 
 function Home() {
   const [fastest, setFastest] = useState<Driver | null>()
@@ -12,24 +12,24 @@ function Home() {
   const [quali, setQuali] = useState<Driver | null>()
 
   useEffect(() => {
-    get(`current/last/constructorStandings.json?limit=1`)
-      .then(response => setConstructorLeader(response.data.MRData.StandingsTable.StandingsLists[0].ConstructorStandings[0].Constructor))
+    fetchConstructorLeader()
+      .then(constructor => setConstructorLeader(constructor))
       .catch(_ => setConstructorLeader(null))
 
-    get(`current/last/driverStandings.json?limit=1`)
-      .then(response => setLeader(response.data.MRData.StandingsTable.StandingsLists[0].DriverStandings[0].Driver))
+    fetchDriverLeader()
+      .then(response => setLeader(response))
       .catch(_ => setLeader(null))
 
-    get(`current/last/qualifying.json?limit=1`)
-      .then(response => setQuali(response.data.MRData.RaceTable.Races[0].QualifyingResults[0].Driver))
+    fetchLastPole()
+      .then(driver => setQuali(driver))
       .catch(_ => setQuali(null))
 
-    get(`current/last/results.json?limit=1`)
-      .then(response => setWinner(response.data.MRData.RaceTable.Races[0].Results[0].Driver))
+    fetchLastWinner()
+      .then(driver => setWinner(driver))
       .catch(_ => setWinner(null))
 
-    get(`current/last/fastest/1/results.json?limit=1`)
-      .then(response => setFastest(response.data.MRData.RaceTable.Races[0].Results[0].Driver))
+    fetchFastestLap()
+      .then(driver => setFastest(driver))
       .catch(_ => setFastest(null))
   }, []);
 

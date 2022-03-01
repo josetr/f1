@@ -35,7 +35,7 @@ function DriverComponent({ match }: RouteComponentProps<{ driver: string }>) {
       <div>Nationality: {driver?.nationality ?? "Unknown"}</div>
       <div>Born: {driver?.dateOfBirth ?? "Unknown"}</div>
     </div>
-    <table style={{ margin: "15px" }}>
+    <table>
       <thead>
         <tr>
           <th>Season</th>

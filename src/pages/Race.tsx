@@ -37,20 +37,20 @@ function RaceComponent({ match }: RouteComponentProps<{ season: string, race: st
       .catch(_ => setRaceTable(null))
   }, [match.params.season, match.params.race]);
 
-  const renderer = (result: RaceResult) => <div style={{ padding: "6px", display: "flex" }}>
+  const renderer = (result: RaceResult) => <div className="list-item">
     <div><Link to={`/drivers/${result.Driver.driverId}`}>#{result.position}</Link></div>
-    <div style={{ flex: "1" }}><Link to={`/drivers/${result.Driver.driverId}`}>{result.Driver.givenName} {result.Driver.familyName}</Link></div>
+    <div className="expand"><Link to={`/drivers/${result.Driver.driverId}`}>{result.Driver.givenName} {result.Driver.familyName}</Link></div>
   </div>
 
   const fastestLap = getFastestLap()
 
   return <>
-    {raceTable && <h1 style={{ color: "black" }}>{raceTable.Races[0].season} {raceTable.Races[0].raceName}</h1>}
+    {raceTable && <h1 className="black">{raceTable.Races[0].season} {raceTable.Races[0].raceName}</h1>}
     {!raceTable && <h1>Grand Prix</h1>}
     {raceTable === undefined && <Loading />}
     {raceTable === null && <Error message="Error loading race" />}
     {raceTable && !raceTable.Races[0] && <p className="card">Race not found.</p>}
-    {raceTable && fastestLap && <h2 style={{ padding: "10px", fontSize: "18px" }} className="card">Fastest Lap: {fastestLap}</h2>}
+    {raceTable && fastestLap && <h2 className="card title">Fastest Lap: {fastestLap}</h2>}
     {raceTable && <List data={raceTable.Races[0].Results} renderer={renderer} keyExtractor={result => result.number} two={true}></List>}
   </>
 }
