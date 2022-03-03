@@ -1,7 +1,7 @@
-import './Loading.scss'
+import styles from './Loading.module.scss'
 
 export function LoadingEllipsis() {
-  return <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+  return <div className={styles['lds-ellipsis']}><div></div><div></div><div></div><div></div></div>
 }
 
 export function Loading({ title }: { title?: string; }) {

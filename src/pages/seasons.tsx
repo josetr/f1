@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import List from '../components/List'
 import { Loading } from '../components/Loading';
 import Error from '../components/Error';
@@ -18,7 +18,7 @@ function Seasons() {
       .catch(_ => setSeasonTable(null))
   }, []);
 
-  const renderer = (season: Season) => <Link to={`/seasons/${season.season}`}>{season.season}</Link>
+  const renderer = (season: Season) => <Link href={`/seasons/${season.season}`}>{season.season}</Link>
 
   return <>
     <h1>Seasons</h1>

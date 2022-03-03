@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import List from '../components/List'
 import { Loading } from '../components/Loading';
 import Error from '../components/Error';
@@ -16,7 +16,7 @@ function Constructors() {
   }, []);
 
   const renderer = (constructor: Constructor) => <>
-    <div><Link to={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link></div>
+    <div><Link href={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link></div>
     Nationality: {constructor.nationality}
   </>
 

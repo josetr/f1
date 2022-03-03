@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import List from '../components/List'
 import { Loading } from '../components/Loading';
 import Error from '../components/Error';
@@ -17,10 +17,12 @@ function Drivers() {
 
   const renderer = (standing: DriverStanding) => <div className="list-item">
     <div>
-      <Link to={`/drivers/${standing.Driver.driverId}`} className="list-item-no">#{standing.position}</Link>
+      <Link href={`/drivers/${standing.Driver.driverId}`} passHref={true}>
+        <a className="list-item-no">{`#${standing.position}`}</a>
+      </Link>
     </div>
     <div className="expand">
-      <div><Link to={`/drivers/${standing.Driver.driverId}`}>{standing.Driver.givenName} {standing.Driver.familyName} ({standing.points})</Link></div>
+      <div><Link href={`/drivers/${standing.Driver.driverId}`} passHref={true}><a>{`${standing.Driver.givenName} ${standing.Driver.familyName} (${standing.points})`}</a></Link></div>
       <div>Nationality: {standing.Driver.nationality}</div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import List from '../components/List'
 import { Loading } from '../components/Loading';
 import Error from '../components/Error';
@@ -16,7 +16,7 @@ function Circuits() {
   }, []);
 
   const renderer = (circuit: Circuit) => <>
-    <div><Link to={`/circuits/${circuit.circuitId}`}>{circuit.circuitName}</Link></div>
+    <div><Link href={`/circuits/${circuit.circuitId}`}>{circuit.circuitName}</Link></div>
     Country: {circuit.Location.country}
   </>
 

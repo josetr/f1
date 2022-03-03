@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { LoadingEllipsis } from "../components/Loading";
 import { Driver, Constructor } from "../models/Models";
 import { fetchConstructorLeader, fetchDriverLeader, fetchFastestLap, fetchLastPole, fetchLastWinner } from "../services/F1Service";
@@ -34,11 +34,11 @@ function Home() {
   }, []);
 
   function getName(driver: Driver | undefined | null) {
-    return driver ? <Link to={`/drivers/${driver.driverId}`}>{driver.givenName} {driver.familyName}</Link> : (driver === undefined ? <LoadingEllipsis /> : "Network Error")
+    return driver ? <Link href={`/drivers/${driver.driverId}`}><>{driver.givenName} {driver.familyName}</></Link> : (driver === undefined ? <LoadingEllipsis /> : "Network Error")
   }
 
   function getConstructorName(constructor: Constructor | undefined | null) {
-    return constructor ? <Link to={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link> : (constructor === undefined ? <LoadingEllipsis /> : "Network Error")
+    return constructor ? <Link href={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link> : (constructor === undefined ? <LoadingEllipsis /> : "Network Error")
   }
 
   return <>

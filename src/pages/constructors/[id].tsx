@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { LoadingEllipsis } from '../components/Loading';
-import { ConstructorTable, StandingsTable } from '../models/Models'
-import { fetchConstructorStandings, fetchConstructorTable } from '../services/F1Service';
+import Link from 'next/link';
+import { LoadingEllipsis } from '../../components/Loading';
+import { ConstructorTable, StandingsTable } from '../../models/Models'
+import { fetchConstructorStandings, fetchConstructorTable } from '../../services/F1Service';
+import { useRouter } from 'next/router';
 
-function Constructors({ match }: RouteComponentProps<{ constructor: string }>) {
+function Constructors() {
   const [constructorTable, setConstructorTable] = useState<ConstructorTable | null>();
   const [constructorStanding, setConstructorStanding] = useState<StandingsTable | null>();
+  const router = useRouter();
+  const constructorId = router.query.id as string;
 
   useEffect(() => {
-    const constructorId = match.params.constructor
+    if (!router.isReady)
+      return;
 
     fetchConstructorTable(constructorId)
       .then(table => setConstructorTable(table))
@@ -21,7 +25,7 @@ function Constructors({ match }: RouteComponentProps<{ constructor: string }>) {
         return setConstructorStanding(table);
       })
       .catch(_ => setConstructorStanding(null))
-  }, [match.params.constructor]);
+  }, [router.isReady, constructorId]);
 
   const constructor = constructorTable?.Constructors[0]
 
@@ -46,7 +50,7 @@ function Constructors({ match }: RouteComponentProps<{ constructor: string }>) {
           </tr>}
         {constructorStanding && constructorStanding.StandingsLists.length > 0 && constructorStanding.StandingsLists.map(standing =>
           <tr key={standing.season}>
-            <td><Link to={`/seasons/${standing.season}`}>{standing.season}</Link></td>
+            <td><Link href={`/seasons/${standing.season}`}>{standing.season}</Link></td>
             <td>{standing.ConstructorStandings[0].points}</td>
             <td>{standing.ConstructorStandings[0].wins}</td>
           </tr>)}

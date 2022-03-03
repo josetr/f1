@@ -1,26 +1,32 @@
 import { useState, useEffect } from 'react';
-import { DriverTable, StandingsTable } from '../models/Models'
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { LoadingEllipsis } from '../components/Loading';
-import { fetchDriver, get } from '../services/F1Service';
+import { DriverTable, StandingsTable } from '../../models/Models'
+import Link from 'next/link';
+import { LoadingEllipsis } from '../../components/Loading';
+import { fetchDriver, get } from '../../services/F1Service';
+import { useRouter } from 'next/router';
 
-function DriverComponent({ match }: RouteComponentProps<{ driver: string }>) {
+function DriverComponent() {
   const [table, setTable] = useState<StandingsTable>();
   const [driverTable, setDriverTable] = useState<DriverTable | null>();
+  const router = useRouter()
+  const driverId = router.query.id as string;
 
   useEffect(() => {
-    fetchDriver(match.params.driver)
+    if (!router.isReady)
+      return;
+
+    fetchDriver(driverId)
       .then(table => setDriverTable(table))
       .catch(_ => setDriverTable(null))
 
-    get(`drivers/${match.params.driver}/driverStandings.json`)
+    get(`drivers/${driverId}/driverStandings.json`)
       .then(ergast => {
         const table = ergast.data.MRData.StandingsTable
         table.StandingsLists.sort((a, b) => b.season - a.season);
         return setTable(table);
       })
       .catch(_ => setDriverTable(null))
-  }, [match.params.driver]);
+  }, [router.isReady, driverId]);
 
   const driver = driverTable?.Drivers[0]
 
@@ -51,8 +57,8 @@ function DriverComponent({ match }: RouteComponentProps<{ driver: string }>) {
           </tr>}
         {table && table.StandingsLists.map(standing =>
           <tr key={standing.season}>
-            <td><Link to={`/seasons/${standing.season}`}>{standing.season}</Link></td>
-            <td><Link to={`/constructors/${standing.DriverStandings[0].Constructors[0].constructorId}`}>{standing.DriverStandings[0].Constructors[0].name}</Link></td>
+            <td><Link href={`/seasons/${standing.season}`}>{standing.season}</Link></td>
+            <td><Link href={`/constructors/${standing.DriverStandings[0].Constructors[0].constructorId}`}>{standing.DriverStandings[0].Constructors[0].name}</Link></td>
             <td>{standing.DriverStandings[0].points}</td>
             <td>{standing.DriverStandings[0].wins}</td>
           </tr>)}
