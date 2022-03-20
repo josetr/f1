@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import List from '../../components/List'
 import { Loading } from '../../components/Loading';
-import Error from '../../components/Error';
 import { RaceTable, RaceResult } from '../../models/Models'
-import { fetchRaceResults } from '../../services/F1Service';
+import { fetchRaceResults, fetchRaces } from '../../services/F1Service';
 import { useRouter } from 'next/router';
+import Card from '../../components/Card';
+import ListDriverCard from '../../components/ListDriverCard';
 
 function toSeconds(msx: string) {
   if (msx.length === 0)
@@ -14,50 +14,62 @@ function toSeconds(msx: string) {
   return parseInt(parts[0]) * 60 + parseFloat(parts[1])
 }
 
-function RaceComponent() {
-  const [raceTable, setRaceTable] = useState<RaceTable | null>();
-  const router = useRouter()
-  const race = router.query.id as string;
-  const season = router.query.season as string;
+function getFastestLapTime(results: RaceResult[]) {
+  let fastest = "99:99:99"
 
-  function getFastestLap() {
-    let fastest = "99:99:99"
-    if (!raceTable)
-      return
-
-    for (const result of raceTable.Races[0].Results) {
-      if (result.FastestLap) {
-        if (toSeconds(result.FastestLap.Time.time) < toSeconds(fastest))
-          fastest = result.FastestLap.Time.time + ` (${result.Driver.givenName} ${result.Driver.familyName}) `
-      }
+  for (const result of results) {
+    if (result.FastestLap) {
+      if (toSeconds(result.FastestLap.Time.time) < toSeconds(fastest))
+        fastest = result.FastestLap.Time.time + ` (${result.Driver.givenName} ${result.Driver.familyName}) `
     }
-
-    return fastest !== "99:99:99" ? fastest : undefined
   }
+
+  return fastest !== "99:99:99" ? fastest : undefined
+}
+
+function RaceComponent() {
+  const [raceInfoTable, setRaceInfoTable] = useState<RaceTable | null>();
+  const [raceResultTable, setRaceResultTable] = useState<RaceTable | null>();
+  const router = useRouter()
+  const raceId = router.query.id as string;
+  const season = router.query.season as string;
 
   useEffect(() => {
     if (!router.isReady)
       return;
-    fetchRaceResults(season, race)
-      .then(table => setRaceTable(table))
-      .catch(_ => setRaceTable(null))
-  }, [router.isReady, season, race]);
+    fetchRaces(season, raceId)
+      .then(table => setRaceInfoTable(table))
+      .catch(_ => setRaceInfoTable(null))
+    fetchRaceResults(season, raceId)
+      .then(table => setRaceResultTable(table))
+      .catch(_ => setRaceResultTable(null))
+  }, [router.isReady, season, raceId]);
 
-  const renderer = (result: RaceResult) => <div className="list-item">
-    <div><Link href={`/drivers/${result.Driver.driverId}`}>{`#${result.position}`}</Link></div>
-    <div className="expand"><Link href={`/drivers/${result.Driver.driverId}`}>{`${result.Driver.givenName} ${result.Driver.familyName}`}</Link></div>
-  </div>
+  const renderer = (result: RaceResult) => <ListDriverCard
+    position={result.position}
+    driver={result.Driver}
+    showNationality={false}
+  />
 
-  const fastestLap = getFastestLap()
+  const raceInfo = raceInfoTable?.Races[0];
+  const raceResults = raceResultTable?.Races[0]?.Results;
+  const fastestLap = raceResults ? getFastestLapTime(raceResults) : undefined;
 
   return <>
-    {raceTable && <h1 className="black">{raceTable.Races[0].season} {raceTable.Races[0].raceName}</h1>}
-    {!raceTable && <h1>Grand Prix</h1>}
-    {raceTable === undefined && <Loading />}
-    {raceTable === null && <Error message="Error loading race" />}
-    {raceTable && !raceTable.Races[0] && <p className="card">Race not found.</p>}
-    {raceTable && fastestLap && <h2 className="card title">Fastest Lap: {fastestLap}</h2>}
-    {raceTable && <List data={raceTable.Races[0].Results} renderer={renderer} keyExtractor={result => result.number} two={true}></List>}
+    <Card>
+      {!raceInfo && <p style={{ color: "var(--primary-color)" }}>Grand Prix</p>}
+      {raceInfo && <p><a href={raceInfo.url}>{raceInfo.raceName}</a></p>}
+      {(raceInfoTable === undefined || raceResultTable === undefined) && <Loading />}
+      {(raceInfoTable === null || raceResultTable === null) && "Error loading race"}
+      {raceInfoTable && !raceInfo && "Race not found"}
+      {raceInfo && <>
+        <p>Country: {raceInfo.Circuit.Location.country}</p>
+        <p>Locality: {raceInfo.Circuit.Location.locality}</p>
+        <p>Date: {raceInfo.date} {raceInfo.time}</p>
+      </>}
+      {raceResultTable && fastestLap && <p>Fastest Lap: {fastestLap}</p>}
+    </Card>
+    {raceResults && <List data={raceResults} renderer={renderer} keyExtractor={result => result.number + result.Driver?.driverId} small={true}></List>}
   </>
 }
 

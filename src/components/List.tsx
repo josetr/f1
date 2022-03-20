@@ -4,8 +4,15 @@ function r<T>(list: T[], renderer: (item: T) => JSX.Element, keyExtractor: (item
   return list.map((driver) => <li key={keyExtractor(driver)}> {renderer(driver)} </li>)
 }
 
-export default function List<T>({ data, renderer, keyExtractor, two }: { data: T[], renderer: (item: T) => JSX.Element, keyExtractor: (item: T) => string | number, two?: boolean }) {
-  return <div className={styles.list} style={{ maxWidth: two ? "700px" : "" }}>
-    <ul>{r(data, renderer, keyExtractor)}</ul>
+export interface ListProps<T> {
+  data: T[];
+  renderer: (item: T) => JSX.Element;
+  keyExtractor: (item: T) => string | number;
+  small?: boolean;
+}
+
+export default function List<T>({ data, renderer, keyExtractor, small }: ListProps<T>) {
+  return <div className="center" style={{ maxWidth: small ? "700px" : undefined }}>
+    <ul className={styles.list}>{r(data, renderer, keyExtractor)}</ul>
   </div>
 }

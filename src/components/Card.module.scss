@@ -1,0 +1,12 @@
+.card {
+  border: 1px solid var(--primary-color);
+  background: #000000dd;
+  width: fit-content;
+  min-width: 255px;
+  margin: 15px auto;
+  padding: 7px;
+
+  a {
+    color: var(--primary-color);
+  }
+}

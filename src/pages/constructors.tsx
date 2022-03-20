@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import List from '../components/List'
 import { Loading } from '../components/Loading';
-import Error from '../components/Error';
 import { Constructor, ConstructorTable } from '../models/Models'
 import { fetchConstructorTable } from '../services/F1Service';
+import Card from '../components/Card';
 
 function Constructors() {
   const [constructorTable, setConstructorTable] = useState<ConstructorTable | null>();
@@ -16,15 +16,17 @@ function Constructors() {
   }, []);
 
   const renderer = (constructor: Constructor) => <>
-    <div><Link href={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link></div>
-    Nationality: {constructor.nationality}
+    <p><Link href={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link></p>
+    <p>Nationality: {constructor.nationality}</p>
   </>
 
   return <>
     <h1>Constructors ({constructorTable?.season ?? new Date().getFullYear()})</h1>
-    {constructorTable === undefined && <Loading />}
-    {constructorTable === null && <Error message="Error loading constructors" />}
-    {constructorTable && <List data={constructorTable.Constructors} renderer={renderer} keyExtractor={constructor => constructor.name} two={true} />}
+    {!constructorTable && <Card>
+      {constructorTable === undefined && <Loading />}
+      {constructorTable === null && "Error loading constructors"}
+    </Card>}
+    {constructorTable && <List data={constructorTable.Constructors} renderer={renderer} keyExtractor={constructor => constructor.name} small={true} />}
   </>
 }
 

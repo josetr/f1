@@ -7,13 +7,13 @@ export function get(url: string) {
   return axios.request<Ergast>({ url: `${apiUrl}/${url}` })
 }
 
-export async function fetchRaces(): Promise<RaceTable> {
-  const response = await get(`current.json`);
+export async function fetchRaces(season?: string, race?: string): Promise<RaceTable> {
+  const response = await get(`${season ?? "current"}${optional(race)}.json`);
   return response.data.MRData.RaceTable;
 }
 
-export async function fetchSeasonRaceTable(seasonId: string): Promise<RaceTable> {
-  const response = await get(`${seasonId}.json`);
+export async function fetchSeasonRaceTable(season: string): Promise<RaceTable> {
+  const response = await get(`${season}.json`);
   return response.data.MRData.RaceTable;
 }
 
@@ -22,31 +22,23 @@ export async function fetchSeasonTable(): Promise<SeasonTable> {
   return response.data.MRData.SeasonTable;
 }
 
-export async function fetchDriverStandings(config?: { season: string }): Promise<StandingsTable> {
-  const response = await get(`${(config && config.season ? config.season : "current")}/driverStandings.json`);
+export async function fetchDriverStandings(season?: string): Promise<StandingsTable> {
+  const response = await get(`${(season ?? "current")}/driverStandings.json`);
   return response.data.MRData.StandingsTable;
 }
 
-export async function fetchConstructorStandings(constructorId: string): Promise<StandingsTable> {
-  const response = await get(`constructors/${constructorId}/constructorStandings.json?limit=999`);
+export async function fetchConstructorStandings(constructor: string): Promise<StandingsTable> {
+  const response = await get(`constructors/${constructor}/constructorStandings.json?limit=999`);
   return response.data.MRData.StandingsTable;
 }
 
-export async function fetchConstructorTable(constructorId?: string): Promise<ConstructorTable> {
-  if (constructorId) {
-    const response = await get(`constructors/${constructorId}.json`);
-    return response.data.MRData.ConstructorTable;
-  }
-  const response = await get(`current/constructors.json`);
+export async function fetchConstructorTable(constructor?: string): Promise<ConstructorTable> {
+  const response = await get(`current/constructors${optional(constructor)}.json`);
   return response.data.MRData.ConstructorTable;
 }
 
-export async function fetchCircuitTable(circuitId?: string): Promise<CircuitTable> {
-  if (circuitId) {
-    const response = await get(`current/circuits/${circuitId}.json`);
-    return response.data.MRData.CircuitTable;
-  }
-  const response = await get(`current/circuits.json`);
+export async function fetchCircuitTable(circuit?: string): Promise<CircuitTable> {
+  const response = await get(`current/circuits${optional(circuit)}.json`);
   return response.data.MRData.CircuitTable;
 }
 
@@ -60,10 +52,13 @@ export async function fetchQualifying(driver: string): Promise<RaceTable> {
   return response.data.MRData.RaceTable;
 }
 
-export async function fetchRaceResults(season: string, race: string): Promise<RaceTable> {
-  if (!season)
-    season = "current"
-  const response = await get(`${season}/${race}/results.json`);
+export async function fetchRaceInfo(season?: string, race?: string): Promise<RaceTable> {
+  const response = await get(`${season ?? "current"}/${race ?? "last"}.json`);
+  return response.data.MRData.RaceTable;
+}
+
+export async function fetchRaceResults(season?: string, race?: string): Promise<RaceTable> {
+  const response = await get(`${season ?? "current"}/${race ?? "last"}/results.json`);
   return response.data.MRData.RaceTable;
 }
 
@@ -90,4 +85,8 @@ export async function fetchLastWinner(): Promise<Driver> {
 export async function fetchFastestLap(): Promise<Driver> {
   const response = await get(`current/last/fastest/1/results.json?limit=1`)
   return response.data.MRData.RaceTable.Races[0]?.Results[0]?.Driver;
+}
+
+function optional(part?: string) {
+  return part ? "/" + part : '';
 }

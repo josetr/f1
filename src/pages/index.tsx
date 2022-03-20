@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { LoadingEllipsis } from "../components/Loading";
+import { Loading } from "../components/Loading";
 import { Driver, Constructor } from "../models/Models";
 import { fetchConstructorLeader, fetchDriverLeader, fetchFastestLap, fetchLastPole, fetchLastWinner } from "../services/F1Service";
+import styles from './index.module.scss'
 
 function Home() {
   const [fastest, setFastest] = useState<Driver | null>()
@@ -34,16 +35,16 @@ function Home() {
   }, []);
 
   function getName(driver: Driver | undefined | null) {
-    return driver ? <Link href={`/drivers/${driver.driverId}`}><>{driver.givenName} {driver.familyName}</></Link> : (driver === undefined ? <LoadingEllipsis /> : "Network Error")
+    return driver ? <Link href={`/drivers/${driver.driverId}`}>{`${driver.givenName} ${driver.familyName}`}</Link> : (driver === undefined ? <Loading /> : "Network Error")
   }
 
   function getConstructorName(constructor: Constructor | undefined | null) {
-    return constructor ? <Link href={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link> : (constructor === undefined ? <LoadingEllipsis /> : "Network Error")
+    return constructor ? <Link href={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link> : (constructor === undefined ? <Loading /> : "Network Error")
   }
 
   return <>
     <h1>Formula 1</h1>
-    <table className="home-summary">
+    <table className={styles.summary}>
       <tbody>
         <tr>
           <th>Constructor Leader</th>

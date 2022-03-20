@@ -1,12 +1,17 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import '../App.scss'
+import styles from './_app.module.scss'
+import Head from 'next/head';
 
 function App({ Component, pageProps }: any) {
   return (
     <>
-      <header className="app-header">
-        <nav className="app-nav">
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <header className={styles.header}>
+        <nav className={styles.nav}>
           <ul>
             <li>
               <NavLink activeClassName="active-link" href="/">Home</NavLink>
@@ -29,10 +34,10 @@ function App({ Component, pageProps }: any) {
           </ul>
         </nav>
       </header>
-      <main className="app-main">
+      <main className={styles.main}>
         <Component {...pageProps} />
       </main>
-      <footer className="app-footer">
+      <footer className={styles.footer}>
         Copyright (C) 2021 Jose Torres
       </footer>
     </>

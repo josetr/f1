@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { DriverTable, StandingsTable } from '../../models/Models'
 import Link from 'next/link';
-import { LoadingEllipsis } from '../../components/Loading';
+import { Loading } from '../../components/Loading';
 import { fetchDriver, get } from '../../services/F1Service';
 import { useRouter } from 'next/router';
+import Card from '../../components/Card';
 
 function DriverComponent() {
   const [table, setTable] = useState<StandingsTable>();
@@ -31,16 +32,14 @@ function DriverComponent() {
   const driver = driverTable?.Drivers[0]
 
   return <>
-    <div className="card">
-      <div>
-        {driverTable === undefined && "Loading..."}
-        {driverTable === null && "Error loading driver data."}
-        {driverTable && driver == null && "Driver doesn't exist."}
-        {driver && <a href={driver.url}>{driver.givenName} {driver.familyName}</a>}
-      </div>
-      <div>Nationality: {driver?.nationality ?? "Unknown"}</div>
-      <div>Born: {driver?.dateOfBirth ?? "Unknown"}</div>
-    </div>
+    <Card>
+      {driverTable === undefined && "Loading..."}
+      {driverTable === null && "Error loading driver data."}
+      {driverTable && driver == null && "Driver doesn't exist."}
+      {driver && <a href={driver.url}>{driver.givenName} {driver.familyName}</a>}
+      <p>Nationality: {driver?.nationality ?? "Unknown"}</p>
+      <p>Born: {driver?.dateOfBirth ?? "Unknown"}</p>
+    </Card>
     <table>
       <thead>
         <tr>
@@ -53,7 +52,7 @@ function DriverComponent() {
       <tbody>
         {!table &&
           <tr>
-            <td colSpan={4}><LoadingEllipsis /></td>
+            <td colSpan={4}><Loading /></td>
           </tr>}
         {table && table.StandingsLists.map(standing =>
           <tr key={standing.season}>

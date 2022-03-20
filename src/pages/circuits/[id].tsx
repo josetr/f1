@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Loading } from '../../components/Loading';
-import Error from '../../components/Error';
 import { CircuitTable, Circuit } from '../../models/Models'
 import { fetchCircuitTable } from '../../services/F1Service';
 import { useRouter } from 'next/router';
+import Card from '../../components/Card';
 
 function CircuitComponent() {
   const [circuitTable, setCircuitTable] = useState<CircuitTable | null>();
@@ -19,16 +19,17 @@ function CircuitComponent() {
   }, [router.isReady, circuit]);
 
   const CircuitCard = (circuit: Circuit) =>
-    <div className="card">
-      <div><a href={circuit.url}>{circuit.circuitName}</a></div>
-      Country: {circuit.Location.country}
-    </div>
+    <Card>
+      <a href={circuit.url}>{circuit.circuitName}</a>
+      <p>Country: {circuit.Location.country}</p>
+    </Card>
 
   return <>
-    <h1>Circuits ({circuitTable?.season ?? new Date().getFullYear()})</h1>
-    {circuitTable === undefined && <Loading />}
-    {circuitTable === null && <Error message="Error loading circuit." />}
-    {circuitTable && circuitTable.Circuits.length <= 0 && <p className="card">Circuit doesn&apos;t exist.</p>}
+    {!circuitTable && <Card>
+      {circuitTable === undefined && <Loading />}
+      {circuitTable === null && "Error loading circuit."}
+    </Card>}
+    {circuitTable && circuitTable.Circuits.length <= 0 && <Card>Circuit doesn&apos;t exist.</Card>}
     {circuitTable && circuitTable.Circuits.length > 0 && CircuitCard(circuitTable.Circuits[0])}
   </>
 }

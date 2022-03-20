@@ -1,7 +1,12 @@
-@import "variables";
+@import "_responsive";
 
 * {
   box-sizing: border-box;
+}
+
+:root {
+  --primary-color: rgb(255, 157, 0);
+  --md: 768px;
 }
 
 html {
@@ -32,104 +37,64 @@ body {
   background-repeat: no-repeat;
 }
 
-.app-header {
-  background-color: black;
-  position: sticky;
-}
-
-.app-main {
-  max-width: 1100px;
-  padding: 15px;
-  margin: 0 auto;
-  flex: 1;
-}
-
-.app-footer {
-  background-color: rgba(0, 0, 0, 0.959);
-  line-height: 50px;
+main {
+  width: 100%;
 }
 
 h1 {
   margin: 0;
   margin-bottom: 15px;
+  color: black;
+  text-shadow: 1px 1px var(#0a0a0f);
+}
+
+p {
+  margin: 2px;
 }
 
 a {
   color: white;
 }
 
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.c-title {
+  padding: 10px;
+  font-size: 18px;
+  margin: 0;
+}
+
 a:hover,
 a:active,
 .active-link {
-  color: $main-color;
+  color: var(--primary-color);
 }
 
-.home-summary {
-  td {
-    min-width: 200px;
-  }
+.table-container {
+  display: block;
+  overflow-y: auto;
+  max-height: 70vh;
+  width: fit-content;
+  margin: auto;
 }
 
 table {
   background: black;
   border-collapse: collapse;
+  margin: auto;
 
   th,
   td {
-    padding: 7px 20px;
-    border: 1px solid $border-color;
+    padding: 10px 25px;
+    border: 1px solid var(--primary-color);
   }
-}
-
-.card {
-  border: 1px solid $border-color;
-  background: #000000dd;
-  display: inline-block;
-  min-width: 255px;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  padding: 7px;
-
-  a {
-    color: orange;
-  }
-}
-
-.card.title {
-  padding: 10px;
-  font-size: 18px;
-}
-
-.list-item {
-  display: flex;
-  padding: 4px;
-}
-
-.list-item-no {
-  padding: 6px;
-  display: inline-block;
 }
 
 .black {
   color: black;
-}
-
-h1 {
-  color: black;
-  text-decoration: underline;
-  text-shadow: 1px 1px $main-color;
-}
-
-.app-nav {
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 5px;
-  }
-  li {
-    display: inline-block;
-    margin: 10px;
-  }
 }
 
 .flex {

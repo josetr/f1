@@ -1,42 +1,31 @@
-@import "../variables";
+@import "../_responsive";
 
 .list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  list-style-type: none;
   justify-content: center;
-  align-items: center;
-  height: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+  grid-gap: 5px;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 
-  @media only screen and (min-width: $md) {
-    flex-direction: row;
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    color: var(--primary-color);
   }
 
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+  @media only screen and (min-width: 300px) {
+    justify-content: flex-start;
+  }
 
-    a:link,
-    a:visited,
-    a:hover,
-    a:active {
-      color: $main-color;
-    }
-
-    li {
-      background: rgba(0, 0, 0, 0.85);
-      border: 1px solid $main-color;
-      border-radius: 4px;
-      padding: 2px;
-      margin: 5px;
-      min-width: 100%;
-
-      @media only screen and (min-width: $md) {
-        min-width: 255px;
-      }
-    }
+  li {
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    padding: 2px;
+    min-width: 100%;
   }
 }

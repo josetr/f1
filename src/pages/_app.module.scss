@@ -1,0 +1,32 @@
+.nav {
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 5px;
+  }
+  li {
+    display: inline-block;
+    margin: 10px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.header {
+  background-color: black;
+  position: sticky;
+}
+
+.main {
+  max-width: 1150px;
+  padding: 15px;
+  margin: 0 auto;
+  flex: 1;
+}
+
+.footer {
+  background-color: rgba(0, 0, 0, 0.959);
+  line-height: 50px;
+}

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import List from '../components/List'
 import { Loading } from '../components/Loading';
-import Error from '../components/Error';
 import { DriverStanding, StandingsEntry } from '../models/Models'
 import { fetchDriverStandings } from '../services/F1Service';
+import ListDriverCard from '../components/ListDriverCard'
+import Card from '../components/Card';
 
 function Drivers() {
   const [drivers, setDrivers] = useState<StandingsEntry | null>();
@@ -15,23 +15,20 @@ function Drivers() {
       .catch(_ => setDrivers(null));
   }, []);
 
-  const renderer = (standing: DriverStanding) => <div className="list-item">
-    <div>
-      <Link href={`/drivers/${standing.Driver.driverId}`} passHref={true}>
-        <a className="list-item-no">{`#${standing.position}`}</a>
-      </Link>
-    </div>
-    <div className="expand">
-      <div><Link href={`/drivers/${standing.Driver.driverId}`} passHref={true}><a>{`${standing.Driver.givenName} ${standing.Driver.familyName} (${standing.points})`}</a></Link></div>
-      <div>Nationality: {standing.Driver.nationality}</div>
-    </div>
-  </div>
+  const renderer = (standing: DriverStanding) => <ListDriverCard
+    driver={standing.Driver}
+    position={standing.position}
+    points={standing.points}
+  />
 
   return <>
     <h1>Drivers ({drivers?.season ?? new Date().getFullYear()})</h1>
-    {drivers === undefined && <Loading />}
-    {drivers === null && <Error message="Error loading drivers" />}
-    {drivers && <List data={drivers.DriverStandings} renderer={renderer} keyExtractor={standing => standing.Driver.driverId} two={true} />}
+    {!drivers && <Card>
+      {drivers === undefined && <Loading />}
+      {drivers === null && "Error loading drivers"}
+    </Card>
+    }
+    {drivers && <List data={drivers.DriverStandings} renderer={renderer} keyExtractor={standing => standing.Driver.driverId} small={true} />}
   </>
 }
 

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { LoadingEllipsis } from '../../components/Loading';
+import { Loading } from '../../components/Loading';
 import { ConstructorTable, StandingsTable } from '../../models/Models'
 import { fetchConstructorStandings, fetchConstructorTable } from '../../services/F1Service';
 import { useRouter } from 'next/router';
+import Card from '../../components/Card';
 
 function Constructors() {
   const [constructorTable, setConstructorTable] = useState<ConstructorTable | null>();
@@ -30,32 +31,32 @@ function Constructors() {
   const constructor = constructorTable?.Constructors[0]
 
   return <>
-    <div className="card">
-      <div>
-        {constructorTable === undefined && <LoadingEllipsis />}
-        {constructorTable === null && "Error loading constructor."}
-        {constructorTable && !constructor && "Constructor doesn't exist."}
-        {constructor && <a href={constructor.url}>{constructor.name}</a>}
-      </div>
-      Nationality: {constructor?.nationality ?? "Unknown"}
+    <Card>
+      {constructorTable === undefined && <Loading />}
+      {constructorTable === null && "Error loading constructor."}
+      {constructorTable && !constructor && "Constructor doesn't exist."}
+      {constructor && <a href={constructor.url}>{constructor.name}</a>}
+      <p>Nationality: {constructor?.nationality ?? "Unknown"}</p>
+    </Card>
+    <div className='table-container'>
+      <table>
+        <thead>
+          <tr><th>Season</th><th>Points</th><th>Wins</th></tr>
+        </thead>
+        <tbody>
+          {constructorStanding === undefined &&
+            <tr>
+              <td colSpan={4}><Loading /></td>
+            </tr>}
+          {constructorStanding && constructorStanding.StandingsLists.length > 0 && constructorStanding.StandingsLists.map(standing =>
+            <tr key={standing.season}>
+              <td><Link href={`/seasons/${standing.season}`}>{standing.season}</Link></td>
+              <td>{standing.ConstructorStandings[0].points}</td>
+              <td>{standing.ConstructorStandings[0].wins}</td>
+            </tr>)}
+        </tbody>
+      </table>
     </div>
-    <table>
-      <thead>
-        <tr><td>Season</td><td>Points</td><td>Wins</td></tr>
-      </thead>
-      <tbody>
-        {constructorStanding === undefined &&
-          <tr>
-            <td colSpan={4}><LoadingEllipsis /></td>
-          </tr>}
-        {constructorStanding && constructorStanding.StandingsLists.length > 0 && constructorStanding.StandingsLists.map(standing =>
-          <tr key={standing.season}>
-            <td><Link href={`/seasons/${standing.season}`}>{standing.season}</Link></td>
-            <td>{standing.ConstructorStandings[0].points}</td>
-            <td>{standing.ConstructorStandings[0].wins}</td>
-          </tr>)}
-      </tbody>
-    </table>
   </>
 }
 
