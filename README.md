@@ -1,1 +1,3 @@
-This is a simple Formula 1 web site
+# Formula 1
+
+![formula1](https://josetr.github.io/images/formula1.png)
