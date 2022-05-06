@@ -1,10 +1,11 @@
-import axios from "axios";
 import { CircuitTable, Constructor, ConstructorTable, Driver, DriverTable, Ergast, RaceTable, SeasonTable, StandingsTable } from "../models/Models";
 
 export const apiUrl = "https://ergast.com/api/f1"
 
-export function get(url: string) {
-  return axios.request<Ergast>({ url: `${apiUrl}/${url}` })
+export async function get(url: string) {
+  const response = await fetch(`${apiUrl}/${url}`);
+  const data = await response.json();
+  return { data: data as Ergast };
 }
 
 export async function fetchRaces(season?: string, race?: string): Promise<RaceTable> {
