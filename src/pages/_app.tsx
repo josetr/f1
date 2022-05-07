@@ -1,8 +1,7 @@
-import { useRouter } from 'next/router';
-import Link from 'next/link';
 import 'App.scss'
 import styles from './_app.module.scss'
 import Head from 'next/head';
+import NavLink from 'components/NavLink';
 
 function App({ Component, pageProps }: any) {
   return (
@@ -42,12 +41,6 @@ function App({ Component, pageProps }: any) {
       </footer>
     </>
   );
-}
-
-function NavLink({ activeClassName, href, children }: { activeClassName: string, href: string, children: string }) {
-  const router = useRouter();
-  const active = router.pathname == href || router.pathname.startsWith(href + "/") ? activeClassName : "";
-  return <Link href={href}><a className={active}>{children}</a></Link>
 }
 
 export default App;
