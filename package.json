@@ -20,8 +20,8 @@
   },
   "scripts": {
     "build": "next build && next export -o build",
-    "start": "next dev",
-    "start-prod": "next start",
+    "dev": "next dev",
+    "start": "next start",
     "lint": "next lint"
   },
   "eslintConfig": {
