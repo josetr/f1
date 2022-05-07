@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import List from '../../components/List'
-import { Loading } from '../../components/Loading';
-import { SeasonTable, Season } from '../../models/Models'
-import { fetchSeasonTable } from '../../services/F1Service';
-import Card from '../../components/Card';
+import List from 'components/List'
+import { Loading } from 'components/Loading';
+import { SeasonTable, Season } from 'models/Models'
+import { fetchSeasonTable } from 'services/F1Service';
+import Card from 'components/Card';
 
 function Seasons() {
   const [seasonTable, setSeasonTable] = useState<SeasonTable | null>();

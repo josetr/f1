@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link'
-import List from '../../components/List'
-import { Loading } from '../../components/Loading';
-import { RaceTable, Race } from '../../models/Models'
-import { fetchSeasonRaceTable } from '../../services/F1Service';
+import List from 'components/List'
+import { Loading } from 'components/Loading';
+import { RaceTable, Race } from 'models/Models'
+import { fetchSeasonRaceTable } from 'services/F1Service';
 import { useRouter } from 'next/router';
-import Card from '../../components/Card';
+import Card from 'components/Card';
 
 function Seasons() {
   const [raceTable, setRaceTable] = useState<RaceTable | null>();

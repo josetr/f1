@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import List from '../../components/List'
-import { Loading } from '../../components/Loading';
-import { RaceTable, RaceResult } from '../../models/Models'
-import { fetchRaceResults, fetchRaces } from '../../services/F1Service';
+import List from 'components/List'
+import { Loading } from 'components/Loading';
+import { RaceTable, RaceResult } from 'models/Models'
+import { fetchRaceResults, fetchRaces } from 'services/F1Service';
 import { useRouter } from 'next/router';
-import Card from '../../components/Card';
-import ListDriverCard from '../../components/ListDriverCard';
+import Card from 'components/Card';
+import ListDriverCard from 'components/ListDriverCard';
 
 function toSeconds(msx: string) {
   if (msx.length === 0)

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Loading } from '../../components/Loading';
-import { ConstructorTable, StandingsTable } from '../../models/Models'
-import { fetchConstructorStandings, fetchConstructorTable } from '../../services/F1Service';
+import { Loading } from 'components/Loading';
+import { ConstructorTable, StandingsTable } from 'models/Models'
+import { fetchConstructorStandings, fetchConstructorTable } from 'services/F1Service';
 import { useRouter } from 'next/router';
-import Card from '../../components/Card';
+import Card from 'components/Card';
 
 function Constructors() {
   const [constructorTable, setConstructorTable] = useState<ConstructorTable | null>();

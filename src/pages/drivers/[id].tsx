@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { DriverTable, StandingsTable } from '../../models/Models'
+import { DriverTable, StandingsTable } from 'models/Models'
 import Link from 'next/link';
-import { Loading } from '../../components/Loading';
-import { fetchDriver, get } from '../../services/F1Service';
+import { Loading } from 'components/Loading';
+import { fetchDriver, get } from 'services/F1Service';
 import { useRouter } from 'next/router';
-import Card from '../../components/Card';
+import Card from 'components/Card';
 
 function DriverComponent() {
   const [table, setTable] = useState<StandingsTable>();

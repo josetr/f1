@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import '../App.scss'
+import 'App.scss'
 import styles from './_app.module.scss'
 import Head from 'next/head';
 

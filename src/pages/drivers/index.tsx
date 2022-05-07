@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import List from '../../components/List'
-import { Loading } from '../../components/Loading';
-import { DriverStanding, StandingsEntry } from '../../models/Models'
-import { fetchDriverStandings } from '../../services/F1Service';
-import ListDriverCard from '../../components/ListDriverCard'
-import Card from '../../components/Card';
+import List from 'components/List'
+import { Loading } from 'components/Loading';
+import { DriverStanding, StandingsEntry } from 'models/Models'
+import { fetchDriverStandings } from 'services/F1Service';
+import ListDriverCard from 'components/ListDriverCard'
+import Card from 'components/Card';
 
 function Drivers() {
   const [drivers, setDrivers] = useState<StandingsEntry | null>();

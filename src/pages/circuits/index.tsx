@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import List from '../../components/List'
-import { Loading } from '../../components/Loading';
-import { Circuit, CircuitTable } from '../../models/Models'
-import { fetchCircuitTable } from '../../services/F1Service';
-import Card from '../../components/Card';
+import List from 'components/List'
+import { Loading } from 'components/Loading';
+import { Circuit, CircuitTable } from 'models/Models'
+import { fetchCircuitTable } from 'services/F1Service';
+import Card from 'components/Card';
 
 function Circuits() {
   const [circuitTable, setCircuitTable] = useState<CircuitTable | null>();

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Loading } from '../../components/Loading';
-import { CircuitTable, Circuit } from '../../models/Models'
-import { fetchCircuitTable } from '../../services/F1Service';
+import { Loading } from 'components/Loading';
+import { CircuitTable, Circuit } from 'models/Models'
+import { fetchCircuitTable } from 'services/F1Service';
 import { useRouter } from 'next/router';
-import Card from '../../components/Card';
+import Card from 'components/Card';
 
 function CircuitComponent() {
   const [circuitTable, setCircuitTable] = useState<CircuitTable | null>();

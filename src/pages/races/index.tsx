@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import List from '../../components/List'
-import { Loading } from '../../components/Loading';
-import { RaceTable, Race } from '../../models/Models'
-import { fetchRaces } from '../../services/F1Service';
-import Card from '../../components/Card';
+import List from 'components/List'
+import { Loading } from 'components/Loading';
+import { RaceTable, Race } from 'models/Models'
+import { fetchRaces } from 'services/F1Service';
+import Card from 'components/Card';
 
 function Races() {
   const [raceTable, setRaceTable] = useState<RaceTable | null>();
