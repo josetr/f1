@@ -1,37 +1,27 @@
-import { useState, useEffect } from 'react';
-import { Loading } from 'components/Loading';
-import { CircuitTable, Circuit } from 'models/Models'
-import { fetchCircuitTable } from 'services/F1Service';
+import { useCallback } from 'react';
+import { CircuitTable, Circuit } from 'api/models'
+import { fetchCircuitTable } from 'api';
 import { useRouter } from 'next/router';
 import Card from 'components/Card';
+import useFetch from 'hooks/useFetch';
+import FetchStatus from 'components/FetchStatus';
 
-function CircuitComponent() {
-  const [circuitTable, setCircuitTable] = useState<CircuitTable | null>();
+export default function CircuitComponent() {
   const router = useRouter();
-  const circuit = router.query.id as string;
+  const circuitId = router.query.id as string;
+  const fetchCircuitTableById = useCallback(() => fetchCircuitTable(circuitId), [circuitId])
+  const [circuitTable, loadCircuitTable] = useFetch<CircuitTable>(fetchCircuitTableById);
+  const circuit = circuitTable?.Circuits[0];
 
-  useEffect(() => {
-    if (!router.isReady)
-      return;
-    fetchCircuitTable(circuit)
-      .then(table => setCircuitTable(table))
-      .catch(_ => setCircuitTable(null));
-  }, [router.isReady, circuit]);
-
-  const CircuitCard = (circuit: Circuit) =>
-    <Card>
-      <a href={circuit.url}>{circuit.circuitName}</a>
-      <p>Country: {circuit.Location.country}</p>
-    </Card>
-
-  return <>
-    {!circuitTable && <Card>
-      {circuitTable === undefined && <Loading />}
-      {circuitTable === null && "Error loading circuit."}
-    </Card>}
-    {circuitTable && circuitTable.Circuits.length <= 0 && <Card>Circuit doesn&apos;t exist.</Card>}
-    {circuitTable && circuitTable.Circuits.length > 0 && CircuitCard(circuitTable.Circuits[0])}
-  </>
+  return <Card>
+    {!circuitTable
+      ? <FetchStatus name="circuit" data={circuitTable} retry={loadCircuitTable} />
+      : !circuit
+        ? "Circuit doesn't exist."
+        : <>
+          <a href={circuit.url}>{circuit.circuitName}</a>
+          <p>Country: {circuit.Location.country}</p>
+        </>
+    }
+  </Card>
 }
-
-export default CircuitComponent

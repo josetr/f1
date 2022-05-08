@@ -1,19 +1,12 @@
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import List from 'components/List'
-import { Loading } from 'components/Loading';
-import { RaceTable, Race } from 'models/Models'
-import { fetchRaces } from 'services/F1Service';
-import Card from 'components/Card';
+import { RaceTable, Race } from 'api/models'
+import { fetchRaces } from 'api';
+import FetchStatus from 'components/FetchStatus';
+import useFetch from 'hooks/useFetch';
 
 function Races() {
-  const [raceTable, setRaceTable] = useState<RaceTable | null>();
-
-  useEffect(() => {
-    fetchRaces()
-      .then(table => setRaceTable(table))
-      .catch(_ => setRaceTable(null))
-  }, []);
+  const [raceTable, loadRaceTable] = useFetch<RaceTable>(fetchRaces);
 
   const renderer = (race: Race) =>
     <div style={{ opacity: new Date(`${race.date} ${race.time}`).getTime() <= Date.now() ? 1 : 0.75 }}>
@@ -25,11 +18,10 @@ function Races() {
 
   return <>
     <h1>Races ({raceTable?.season ?? new Date().getFullYear()})</h1>
-    {!raceTable && <Card>
-      {raceTable === undefined && <Loading />}
-      {raceTable === null && "Error loading races"}
-    </Card>}
-    {raceTable && <List data={raceTable.Races} renderer={renderer} keyExtractor={race => race.raceName}></List>}
+    {!raceTable
+      ? <FetchStatus data={raceTable} name="races" retry={loadRaceTable} card={true} />
+      : <List data={raceTable.Races} renderer={renderer} keyExtractor={race => race.raceName}></List>
+    }
   </>
 }
 

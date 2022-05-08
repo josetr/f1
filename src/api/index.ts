@@ -1,4 +1,4 @@
-import { CircuitTable, Constructor, ConstructorTable, Driver, DriverTable, Ergast, RaceTable, SeasonTable, StandingsTable } from "../models/Models";
+import { CircuitTable, Constructor, ConstructorTable, Driver, DriverTable, Ergast, RaceTable, SeasonTable, StandingsTable } from "./models";
 
 export const apiUrl = "https://ergast.com/api/f1"
 
@@ -23,8 +23,13 @@ export async function fetchSeasonTable(): Promise<SeasonTable> {
   return response.data.MRData.SeasonTable;
 }
 
-export async function fetchDriverStandings(season?: string): Promise<StandingsTable> {
+export async function fetchSeasonDriverStandings(season?: string): Promise<StandingsTable> {
   const response = await get(`${(season ?? "current")}/driverStandings.json`);
+  return response.data.MRData.StandingsTable;
+}
+
+export async function fetchDriverStandings(driverId: string): Promise<StandingsTable> {
+  const response = await get(`drivers/${driverId}/driverStandings.json`);
   return response.data.MRData.StandingsTable;
 }
 

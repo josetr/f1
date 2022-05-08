@@ -3,11 +3,12 @@ import styles from './_app.module.scss'
 import Head from 'next/head';
 import NavLink from 'components/NavLink';
 
-function App({ Component, pageProps }: any) {
+export default function App({ Component, pageProps }: any) {
   return (
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Formula 1</title>
       </Head>
       <header className={styles.header}>
         <nav className={styles.nav}>
@@ -33,14 +34,14 @@ function App({ Component, pageProps }: any) {
           </ul>
         </nav>
       </header>
-      <main className={styles.main}>
-        <Component {...pageProps} />
-      </main>
+      <div className={styles.main_background}>
+        <main className={styles.main}>
+          <Component {...pageProps} />
+        </main>
+      </div>
       <footer className={styles.footer}>
         Copyright (C) 2021 Jose Torres
       </footer>
     </>
   );
 }
-
-export default App;

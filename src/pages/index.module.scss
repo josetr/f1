@@ -1,5 +1,15 @@
 .summary {
+  @media only screen and (max-width: 400px) {
+    th,
+    td {
+      padding: 10px 10px;
+      margin: 0;
+    }
+  }
+
   td {
-    min-width: 200px;
+    @media only screen and (min-width: 420px) {
+      min-width: 200px;
+    }
   }
 }

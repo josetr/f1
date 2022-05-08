@@ -28,21 +28,17 @@ body {
   text-align: center;
   color: #ffffff;
   min-height: 100%;
-  max-width: 1920px;
-  background: url("./App.background.jpg");
-  background-size: 100% 100vh;
-  background-repeat: no-repeat;
-}
-
-main {
-  width: 100%;
 }
 
 h1 {
   margin: 0;
   margin-bottom: 15px;
-  color: black;
-  text-shadow: 1px 1px var(#0a0a0f);
+  background: black;
+  border: 1px solid orange;
+  border-radius: 3px;
+  display: inline-block;
+  padding: 10px 10px;
+  font-size: 1.2rem;
 }
 
 p {

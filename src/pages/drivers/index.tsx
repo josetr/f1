@@ -1,19 +1,13 @@
-import { useState, useEffect } from 'react';
 import List from 'components/List'
-import { Loading } from 'components/Loading';
-import { DriverStanding, StandingsEntry } from 'models/Models'
-import { fetchDriverStandings } from 'services/F1Service';
+import { DriverStanding } from 'api/models'
+import { fetchSeasonDriverStandings } from 'api';
 import ListDriverCard from 'components/ListDriverCard'
-import Card from 'components/Card';
+import FetchStatus from 'components/FetchStatus';
+import useFetch from 'hooks/useFetch';
 
-function Drivers() {
-  const [drivers, setDrivers] = useState<StandingsEntry | null>();
-
-  useEffect(() => {
-    fetchDriverStandings()
-      .then(data => setDrivers(data.StandingsLists[0]))
-      .catch(_ => setDrivers(null));
-  }, []);
+export default function Drivers() {
+  const [standings, loadStandings] = useFetch(fetchSeasonDriverStandings);
+  const drivers = standings?.StandingsLists[0];
 
   const renderer = (standing: DriverStanding) => <ListDriverCard
     driver={standing.Driver}
@@ -23,13 +17,9 @@ function Drivers() {
 
   return <>
     <h1>Drivers ({drivers?.season ?? new Date().getFullYear()})</h1>
-    {!drivers && <Card>
-      {drivers === undefined && <Loading />}
-      {drivers === null && "Error loading drivers"}
-    </Card>
+    {!drivers
+      ? <FetchStatus data={standings} name="drivers" retry={loadStandings} card={true} />
+      : <List data={drivers.DriverStandings} renderer={renderer} keyExtractor={standing => standing.Driver.driverId} small={true} />
     }
-    {drivers && <List data={drivers.DriverStandings} renderer={renderer} keyExtractor={standing => standing.Driver.driverId} small={true} />}
   </>
 }
-
-export default Drivers

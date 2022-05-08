@@ -1,41 +1,26 @@
-import { useState, useEffect } from 'react';
-import { DriverTable, StandingsTable } from 'models/Models'
+import { useCallback } from 'react';
+import { DriverTable, StandingsTable } from 'api/models'
 import Link from 'next/link';
-import { Loading } from 'components/Loading';
-import { fetchDriver, get } from 'services/F1Service';
+import { fetchDriver, fetchDriverStandings } from 'api';
 import { useRouter } from 'next/router';
 import Card from 'components/Card';
+import useFetch from 'hooks/useFetch';
+import FetchStatus from 'components/FetchStatus';
 
-function DriverComponent() {
-  const [table, setTable] = useState<StandingsTable>();
-  const [driverTable, setDriverTable] = useState<DriverTable | null>();
+export default function DriverComponent() {
   const router = useRouter()
   const driverId = router.query.id as string;
-
-  useEffect(() => {
-    if (!router.isReady)
-      return;
-
-    fetchDriver(driverId)
-      .then(table => setDriverTable(table))
-      .catch(_ => setDriverTable(null))
-
-    get(`drivers/${driverId}/driverStandings.json`)
-      .then(ergast => {
-        const table = ergast.data.MRData.StandingsTable
-        table.StandingsLists.sort((a, b) => b.season - a.season);
-        return setTable(table);
-      })
-      .catch(_ => setDriverTable(null))
-  }, [router.isReady, driverId]);
+  const fetchDriverById = useCallback(() => fetchDriver(driverId), [driverId]);
+  const fetchStandingsById = useCallback(() => fetchDriverStandings(driverId), [driverId]);
+  const [driverTable, loadDriverTable] = useFetch<DriverTable>(fetchDriverById);
+  const [table, loadTable] = useFetch<StandingsTable>(fetchStandingsById);
 
   const driver = driverTable?.Drivers[0]
 
   return <>
     <Card>
-      {driverTable === undefined && "Loading..."}
-      {driverTable === null && "Error loading driver data."}
-      {driverTable && driver == null && "Driver doesn't exist."}
+      <FetchStatus name="driver data" data={driverTable} retry={loadDriverTable} />
+      {driverTable && !driver && "Driver doesn't exist."}
       {driver && <a href={driver.url}>{driver.givenName} {driver.familyName}</a>}
       <p>Nationality: {driver?.nationality ?? "Unknown"}</p>
       <p>Born: {driver?.dateOfBirth ?? "Unknown"}</p>
@@ -52,9 +37,11 @@ function DriverComponent() {
       <tbody>
         {!table &&
           <tr>
-            <td colSpan={4}><Loading /></td>
+            <td colSpan={4}>
+              <FetchStatus name="driver data" data={table} retry={loadTable} />
+            </td>
           </tr>}
-        {table && table.StandingsLists.map(standing =>
+        {table && table.StandingsLists.sort((a, b) => b.season - a.season).map(standing =>
           <tr key={standing.season}>
             <td><Link href={`/seasons/${standing.season}`}>{standing.season}</Link></td>
             <td><Link href={`/constructors/${standing.DriverStandings[0].Constructors[0].constructorId}`}>{standing.DriverStandings[0].Constructors[0].name}</Link></td>
@@ -65,5 +52,3 @@ function DriverComponent() {
     </table>
   </>
 }
-
-export default DriverComponent

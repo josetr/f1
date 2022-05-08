@@ -1,23 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useCallback } from 'react';
 import Link from 'next/link'
 import List from 'components/List'
-import { Loading } from 'components/Loading';
-import { RaceTable, Race } from 'models/Models'
-import { fetchSeasonRaceTable } from 'services/F1Service';
+import { RaceTable, Race } from 'api/models'
+import { fetchSeasonRaceTable } from 'api';
 import { useRouter } from 'next/router';
 import Card from 'components/Card';
+import useFetch from 'hooks/useFetch';
+import FetchStatus from 'components/FetchStatus';
 
-function Seasons() {
-  const [raceTable, setRaceTable] = useState<RaceTable | null>();
+export default function Seasons() {
   const router = useRouter()
   const seasonId = router.query.id as string
-
-  useEffect(() => {
-    if (!router.isReady) return;
-    fetchSeasonRaceTable(seasonId)
-      .then(table => setRaceTable(table))
-      .catch(_ => setRaceTable(null));
-  }, [router.isReady, seasonId]);
+  const fetchRaceTableById = useCallback(() => fetchSeasonRaceTable(seasonId), [seasonId]);
+  const [raceTable, loadRaceTable] = useFetch<RaceTable | null>(fetchRaceTableById);
 
   const renderer = (race: Race) => <div style={{ opacity: new Date(`${race.date}` + (race.time ? " " + race.time : "")).getTime() <= Date.now() ? 1 : 0.75 }}>
     <p><Link href={`/races/${race.round}?season=${raceTable?.season}`}>{race.raceName}</Link></p>
@@ -29,12 +24,9 @@ function Seasons() {
   return <>
     <h1>{raceTable?.season ?? seasonId} Formula 1 World Championship</h1>
     {!raceTable?.Races?.[0] && <Card>
-      {raceTable === undefined && <Loading />}
-      {raceTable === null && "Error loading season"}
+      <FetchStatus name="season" data={raceTable} retry={loadRaceTable} />
       {raceTable && raceTable.Races[0] === undefined && "Season doesn't exist."}
     </Card>}
     {raceTable && <List data={raceTable.Races} renderer={renderer} keyExtractor={result => result.raceName}></List>}
   </>
 }
-
-export default Seasons

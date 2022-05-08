@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Driver } from "../models/Models";
+import { Driver } from "api/models";
 import styles from './ListDriverCard.module.scss';
 
 export default function ListDriverCard({ driver, position, points, showNationality = true }: { driver: Driver, position: number, points?: number, showNationality?: boolean }) {

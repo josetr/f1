@@ -1,45 +1,28 @@
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Loading } from "../components/Loading";
-import { Driver, Constructor } from "../models/Models";
-import { fetchConstructorLeader, fetchDriverLeader, fetchFastestLap, fetchLastPole, fetchLastWinner } from "../services/F1Service";
+import { Loading } from "components/Loading";
+import { Driver, Constructor } from "api/models";
+import { fetchConstructorLeader, fetchDriverLeader, fetchFastestLap, fetchLastPole, fetchLastWinner } from "api";
 import styles from './index.module.scss'
+import useFetch from "hooks/useFetch";
+import RetryLink from "components/RetryLink";
 
-function Home() {
-  const [fastest, setFastest] = useState<Driver | null>()
-  const [winner, setWinner] = useState<Driver | null>()
-  const [leader, setLeader] = useState<Driver | null>()
-  const [constructorLeader, setConstructorLeader] = useState<Constructor | null>()
-  const [quali, setQuali] = useState<Driver | null>()
+export default function Home() {
+  const [fastest, loadFastest] = useFetch<Driver>(fetchFastestLap)
+  const [winner, loadWinner] = useFetch<Driver>(fetchLastWinner)
+  const [leader, loadLeader] = useFetch<Driver>(fetchDriverLeader)
+  const [constructorLeader, loadConstructorLeader] = useFetch<Constructor>(fetchConstructorLeader)
+  const [quali, loadQuali] = useFetch<Driver>(fetchLastPole)
 
-  useEffect(() => {
-    fetchConstructorLeader()
-      .then(constructor => setConstructorLeader(constructor))
-      .catch(_ => setConstructorLeader(null))
-
-    fetchDriverLeader()
-      .then(response => setLeader(response))
-      .catch(_ => setLeader(null))
-
-    fetchLastPole()
-      .then(driver => setQuali(driver))
-      .catch(_ => setQuali(null))
-
-    fetchLastWinner()
-      .then(driver => setWinner(driver))
-      .catch(_ => setWinner(null))
-
-    fetchFastestLap()
-      .then(driver => setFastest(driver))
-      .catch(_ => setFastest(null))
-  }, []);
-
-  function getName(driver: Driver | undefined | null) {
-    return driver ? <Link href={`/drivers/${driver.driverId}`}>{`${driver.givenName} ${driver.familyName}`}</Link> : (driver === undefined ? <Loading /> : "Network Error")
+  function error<T>(obj: T, fetch: () => void) {
+    return (obj === undefined ? <Loading /> : <div>Network Error. <RetryLink onClick={fetch} /></div>);
   }
 
-  function getConstructorName(constructor: Constructor | undefined | null) {
-    return constructor ? <Link href={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link> : (constructor === undefined ? <Loading /> : "Network Error")
+  function getName(driver: Driver | undefined | null, fetch: () => void) {
+    return driver ? <Link href={`/drivers/${driver.driverId}`}>{`${driver.givenName} ${driver.familyName}`}</Link> : error(driver, fetch);
+  }
+
+  function getConstructorName(constructor: Constructor | undefined | null, fetch: () => void) {
+    return constructor ? <Link href={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link> : error(constructor, fetch);
   }
 
   return <>
@@ -48,27 +31,25 @@ function Home() {
       <tbody>
         <tr>
           <th>Constructor Leader</th>
-          <td>{getConstructorName(constructorLeader)}</td>
+          <td>{getConstructorName(constructorLeader, loadConstructorLeader)} </td>
         </tr>
         <tr>
           <th>Driver Leader</th>
-          <td>{getName(leader)}</td>
+          <td>{getName(leader, loadLeader)}</td>
         </tr>
         <tr>
           <th>Last Winner</th>
-          <td>{getName(winner)}</td>
+          <td>{getName(winner, loadWinner)}</td>
         </tr>
         <tr>
           <th>Last Pole</th>
-          <td>{getName(quali)}</td>
+          <td>{getName(quali, loadQuali)}</td>
         </tr>
         <tr>
           <th>Last Fastest Lap</th>
-          <td>{getName(fastest)}</td>
+          <td>{getName(fastest, loadFastest)}</td>
         </tr>
       </tbody>
     </table>
   </>
 }
-
-export default Home
