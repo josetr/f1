@@ -16,7 +16,7 @@ function Circuits() {
   return <>
     <h1>Circuits ({circuitTable?.season ?? new Date().getFullYear()})</h1>
     {!circuitTable
-      ? <FetchStatus data={circuitTable} name="circuits" retry={loadCircuitTable} card={true} />
+      ? <FetchStatus data={circuitTable} name="circuits" retry={loadCircuitTable} page />
       : <List data={circuitTable.Circuits} renderer={renderer} keyExtractor={circuit => circuit.circuitName} />
     }
   </>

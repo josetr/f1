@@ -19,14 +19,15 @@ export default function Seasons() {
     <p>Country: {race.Circuit.Location.country}</p>
     <p>Locality: {race.Circuit.Location.locality}</p>
     <p>Date: {race.date} {race.time}</p>
-  </div >
+  </div>
 
   return <>
     <h1>{raceTable?.season ?? seasonId} Formula 1 World Championship</h1>
-    {!raceTable?.Races?.[0] && <Card>
-      <FetchStatus name="season" data={raceTable} retry={loadRaceTable} />
-      {raceTable && raceTable.Races[0] === undefined && "Season doesn't exist."}
-    </Card>}
-    {raceTable && <List data={raceTable.Races} renderer={renderer} keyExtractor={result => result.raceName}></List>}
+    {!raceTable
+      ? <FetchStatus name="season" data={raceTable} retry={loadRaceTable} page />
+      : <>
+        <List data={raceTable.Races} renderer={renderer} keyExtractor={result => result.raceName}></List>
+        {raceTable.Races[0] === undefined && <Card>Season doesn&apos;t exist.</Card>}
+      </>}
   </>
 }

@@ -13,7 +13,7 @@ export default function Seasons() {
   return <>
     <h1>Seasons</h1>
     {!seasonTable
-      ? <FetchStatus data={seasonTable} name="seasons" retry={loadSeasonTable} card={true} />
+      ? <FetchStatus data={seasonTable} name="seasons" retry={loadSeasonTable} page />
       : <List data={seasonTable.Seasons.sort((a, b) => b.season - a.season)} renderer={renderer} keyExtractor={season => season.season} />}
   </>
 }

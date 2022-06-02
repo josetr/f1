@@ -19,7 +19,7 @@ function Races() {
   return <>
     <h1>Races ({raceTable?.season ?? new Date().getFullYear()})</h1>
     {!raceTable
-      ? <FetchStatus data={raceTable} name="races" retry={loadRaceTable} card={true} />
+      ? <FetchStatus data={raceTable} name="races" retry={loadRaceTable} page />
       : <List data={raceTable.Races} renderer={renderer} keyExtractor={race => race.raceName}></List>
     }
   </>

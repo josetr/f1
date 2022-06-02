@@ -18,7 +18,7 @@ export default function Drivers() {
   return <>
     <h1>Drivers ({drivers?.season ?? new Date().getFullYear()})</h1>
     {!drivers
-      ? <FetchStatus data={standings} name="drivers" retry={loadStandings} card={true} />
+      ? <FetchStatus data={standings} name="drivers" retry={loadStandings} page />
       : <List data={drivers.DriverStandings} renderer={renderer} keyExtractor={standing => standing.Driver.driverId} small={true} />
     }
   </>

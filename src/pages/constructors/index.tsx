@@ -16,7 +16,7 @@ export default function Constructors() {
   return <>
     <h1>Constructors ({constructorTable?.season ?? new Date().getFullYear()})</h1>
     {!constructorTable
-      ? <FetchStatus name="constructors" data={constructorTable} retry={loadConstructorTable} card={true} />
+      ? <FetchStatus name="constructors" data={constructorTable} retry={loadConstructorTable} page />
       : <List data={constructorTable.Constructors} renderer={renderer} keyExtractor={constructor => constructor.name} small={true} />
     }
   </>
