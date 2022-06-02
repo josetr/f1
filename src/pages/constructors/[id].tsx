@@ -25,27 +25,25 @@ export default function Constructors() {
       )}
       <p>Nationality: {constructor?.nationality ?? "Unknown"}</p>
     </Card>
-    <div className='table-container'>
-      <table>
-        <thead>
-          <tr><th>Season</th><th>Points</th><th>Wins</th></tr>
-        </thead>
-        <tbody>
-          {!constructorStanding &&
-            <tr>
-              <td colSpan={4}>
-                <FetchStatus name="table" data={constructorStanding} retry={loadConstructorStanding} />
-              </td>
-            </tr>
-          }
-          {constructorStanding && constructorStanding.StandingsLists.length > 0 && constructorStanding.StandingsLists.sort((a, b) => b.season - a.season).map(standing =>
-            <tr key={standing.season}>
-              <td><Link href={`/seasons/${standing.season}`}>{standing.season}</Link></td>
-              <td>{standing.ConstructorStandings[0].points}</td>
-              <td>{standing.ConstructorStandings[0].wins}</td>
-            </tr>)}
-        </tbody>
-      </table>
-    </div>
+    <table>
+      <thead>
+        <tr><th>Season</th><th>Points</th><th>Wins</th></tr>
+      </thead>
+      <tbody>
+        {!constructorStanding &&
+          <tr>
+            <td colSpan={4}>
+              <FetchStatus name="table" data={constructorStanding} retry={loadConstructorStanding} />
+            </td>
+          </tr>
+        }
+        {constructorStanding && constructorStanding.StandingsLists.length > 0 && constructorStanding.StandingsLists.sort((a, b) => b.season - a.season).map(standing =>
+          <tr key={standing.season}>
+            <td><Link href={`/seasons/${standing.season}`}>{standing.season}</Link></td>
+            <td>{standing.ConstructorStandings[0].points}</td>
+            <td>{standing.ConstructorStandings[0].wins}</td>
+          </tr>)}
+      </tbody>
+    </table>
   </>
 }
