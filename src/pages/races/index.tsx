@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import List from 'components/List'
-import { RaceTable, Race } from 'api/models'
-import { fetchRaces } from 'api';
+import { Race } from 'api/models'
+import { useFetchRaces } from 'api';
 import FetchStatus from 'components/FetchStatus';
-import useFetch from 'hooks/useFetch';
 
 function Races() {
-  const [raceTable, loadRaceTable] = useFetch<RaceTable>(fetchRaces);
+  const { data: raceTable, mutate: loadRaceTable } = useFetchRaces();
 
   const renderer = (race: Race) =>
     <div style={{ opacity: new Date(`${race.date} ${race.time}`).getTime() <= Date.now() ? 1 : 0.75 }}>

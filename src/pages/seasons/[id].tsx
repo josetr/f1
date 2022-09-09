@@ -1,18 +1,15 @@
-import { useCallback } from 'react';
 import Link from 'next/link'
 import List from 'components/List'
-import { RaceTable, Race } from 'api/models'
-import { fetchSeasonRaceTable } from 'api';
+import { Race } from 'api/models'
+import { useFetchSeasonRaceTable } from 'api';
 import { useRouter } from 'next/router';
 import Card from 'components/Card';
-import useFetch from 'hooks/useFetch';
 import FetchStatus from 'components/FetchStatus';
 
 export default function Seasons() {
   const router = useRouter()
   const seasonId = router.query.id as string
-  const fetchRaceTableById = useCallback(() => fetchSeasonRaceTable(seasonId), [seasonId]);
-  const [raceTable, loadRaceTable] = useFetch<RaceTable | null>(fetchRaceTableById);
+  const { data: raceTable, mutate: loadRaceTable } = useFetchSeasonRaceTable(seasonId);
 
   const renderer = (race: Race) => <div style={{ opacity: new Date(`${race.date}` + (race.time ? " " + race.time : "")).getTime() <= Date.now() ? 1 : 0.75 }}>
     <p><Link href={`/races/${race.round}?season=${raceTable?.season}`}>{race.raceName}</Link></p>

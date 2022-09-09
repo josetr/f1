@@ -1,19 +1,14 @@
-import { useCallback } from 'react';
 import Link from 'next/link';
-import { ConstructorTable, StandingsTable } from 'api/models'
-import { fetchConstructorStandings, fetchConstructorTable } from 'api';
+import { useFetchConstructorStandings, useFetchConstructorTable } from 'api';
 import { useRouter } from 'next/router';
 import Card from 'components/Card';
-import useFetch from 'hooks/useFetch';
 import FetchStatus from 'components/FetchStatus';
 
 export default function Constructors() {
   const router = useRouter();
   const constructorId = router.query.id as string;
-  const fetchConstructorTableById = useCallback(() => fetchConstructorTable(constructorId), [constructorId]);
-  const fetchStandingsTableById = useCallback(() => fetchConstructorStandings(constructorId), [constructorId]);
-  const [constructorTable, loadConstructorTable] = useFetch<ConstructorTable>(fetchConstructorTableById);
-  const [constructorStanding, loadConstructorStanding] = useFetch<StandingsTable>(fetchStandingsTableById);
+  const { data: constructorTable, mutate: loadConstructorTable } = useFetchConstructorTable(constructorId);
+  const { data: constructorStanding, mutate: loadConstructorStanding } = useFetchConstructorStandings(constructorId);
   const constructor = constructorTable?.Constructors[0]
   return <>
     <Card>

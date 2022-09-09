@@ -1,22 +1,18 @@
-import { useCallback } from 'react';
 import List from 'components/List'
 import { Loading } from 'components/Loading';
-import { RaceTable, RaceResult } from 'api/models'
-import { fetchRaceResults, fetchRaces } from 'api';
+import { RaceResult } from 'api/models'
+import { useFetchRaceResults, useFetchRaces } from 'api';
 import { useRouter } from 'next/router';
 import Card from 'components/Card';
 import ListDriverCard from 'components/ListDriverCard';
-import useFetch from 'hooks/useFetch';
 import LoadingError from 'components/LoadingError';
 
 export default function RaceComponent() {
   const router = useRouter()
   const raceId = router.query.id as string;
   const season = router.query.season as string;
-  const fetchRacesById = useCallback(() => fetchRaces(season, raceId), [season, raceId]);
-  const fetchRaceResultsById = useCallback(() => fetchRaceResults(season, raceId), [season, raceId]);
-  const [raceInfoTable, loadRaceInfoTable] = useFetch<RaceTable>(fetchRacesById);
-  const [raceResultTable, loadRaceResultTable] = useFetch<RaceTable>(fetchRaceResultsById);
+  const { data: raceInfoTable, mutate: loadRaceInfoTable } = useFetchRaces(season, raceId);
+  const { data: raceResultTable, mutate: loadRaceResultTable } = useFetchRaceResults(season, raceId);
 
   const reload = () => {
     if (raceInfoTable === null) loadRaceInfoTable();

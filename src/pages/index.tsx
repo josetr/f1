@@ -1,17 +1,16 @@
 import Link from "next/link";
 import { Loading } from "components/Loading";
 import { Driver, Constructor } from "api/models";
-import { fetchConstructorLeader, fetchDriverLeader, fetchFastestLap, fetchLastPole, fetchLastWinner } from "api";
+import { useFetchConstructorLeader, useFetchDriverLeader, useFetchFastestLap, useFetchLastPole, useFetchLastWinner } from "api";
 import styles from './index.module.scss'
-import useFetch from "hooks/useFetch";
 import RetryLink from "components/RetryLink";
 
 export default function Home() {
-  const [fastest, loadFastest] = useFetch<Driver>(fetchFastestLap)
-  const [winner, loadWinner] = useFetch<Driver>(fetchLastWinner)
-  const [leader, loadLeader] = useFetch<Driver>(fetchDriverLeader)
-  const [constructorLeader, loadConstructorLeader] = useFetch<Constructor>(fetchConstructorLeader)
-  const [quali, loadQuali] = useFetch<Driver>(fetchLastPole)
+  const { data: fastest, mutate: loadFastest } = useFetchFastestLap();
+  const { data: winner, mutate: loadWinner } = useFetchLastWinner();
+  const { data: leader, mutate: loadLeader } = useFetchDriverLeader();
+  const { data: constructorLeader, mutate: loadConstructorLeader } = useFetchConstructorLeader();
+  const { data: quali, mutate: loadQuali } = useFetchLastPole();
 
   function error<T>(obj: T, fetch: () => void) {
     return (obj === undefined ? <Loading /> : <div>Network Error. <RetryLink onClick={fetch} /></div>);

@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import List from 'components/List'
-import { Circuit, CircuitTable } from 'api/models'
-import { fetchCircuitTable } from 'api';
+import { Circuit } from 'api/models'
+import { useFetchCircuitTable } from 'api';
 import FetchStatus from 'components/FetchStatus';
-import useFetch from 'hooks/useFetch';
 
 function Circuits() {
-  const [circuitTable, loadCircuitTable] = useFetch<CircuitTable>(fetchCircuitTable);
+  const { data: circuitTable, mutate: loadCircuitTable } = useFetchCircuitTable();
 
   const renderer = (circuit: Circuit) => <>
     <p><Link href={`/circuits/${circuit.circuitId}`}>{circuit.circuitName}</Link></p>

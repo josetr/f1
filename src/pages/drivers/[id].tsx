@@ -1,19 +1,14 @@
-import { useCallback } from 'react';
-import { DriverTable, StandingsTable } from 'api/models'
 import Link from 'next/link';
-import { fetchDriver, fetchDriverStandings } from 'api';
+import { useFetchDriver, useFetchDriverStandings } from 'api';
 import { useRouter } from 'next/router';
 import Card from 'components/Card';
-import useFetch from 'hooks/useFetch';
 import FetchStatus from 'components/FetchStatus';
 
 export default function DriverComponent() {
   const router = useRouter()
   const driverId = router.query.id as string;
-  const fetchDriverById = useCallback(() => fetchDriver(driverId), [driverId]);
-  const fetchStandingsById = useCallback(() => fetchDriverStandings(driverId), [driverId]);
-  const [driverTable, loadDriverTable] = useFetch<DriverTable>(fetchDriverById);
-  const [table, loadTable] = useFetch<StandingsTable>(fetchStandingsById);
+  const {data: driverTable, mutate: loadDriverTable} = useFetchDriver(driverId);
+  const {data: table, mutate: loadTable} = useFetchDriverStandings(driverId);
 
   const driver = driverTable?.Drivers[0]
 

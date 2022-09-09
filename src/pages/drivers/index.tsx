@@ -1,12 +1,11 @@
 import List from 'components/List'
 import { DriverStanding } from 'api/models'
-import { fetchSeasonDriverStandings } from 'api';
+import { useFetchSeasonDriverStandings } from 'api';
 import ListDriverCard from 'components/ListDriverCard'
 import FetchStatus from 'components/FetchStatus';
-import useFetch from 'hooks/useFetch';
 
 export default function Drivers() {
-  const [standings, loadStandings] = useFetch(fetchSeasonDriverStandings);
+  const { data: standings, mutate: loadStandings } = useFetchSeasonDriverStandings();
   const drivers = standings?.StandingsLists[0];
 
   const renderer = (standing: DriverStanding) => <ListDriverCard

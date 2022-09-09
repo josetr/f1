@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import List from 'components/List'
-import { SeasonTable, Season } from 'api/models'
-import { fetchSeasonTable } from 'api';
+import { Season } from 'api/models'
+import { useFetchSeasonTable } from 'api';
 import FetchStatus from 'components/FetchStatus';
-import useFetch from 'hooks/useFetch';
 
 export default function Seasons() {
-  const [seasonTable, loadSeasonTable] = useFetch<SeasonTable>(fetchSeasonTable);
+  const { data: seasonTable, mutate: loadSeasonTable } = useFetchSeasonTable();
 
   const renderer = (season: Season) => <p><Link href={`/seasons/${season.season}`}>{season.season}</Link></p>
 

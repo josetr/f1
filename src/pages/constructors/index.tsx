@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import List from 'components/List'
-import { Constructor, ConstructorTable } from 'api/models'
-import { fetchConstructorTable } from 'api';
+import { Constructor } from 'api/models'
+import { useFetchConstructorTable } from 'api';
 import FetchStatus from 'components/FetchStatus';
-import useFetch from 'hooks/useFetch';
 
 export default function Constructors() {
-  const [constructorTable, loadConstructorTable] = useFetch<ConstructorTable>(fetchConstructorTable);
+  const { data: constructorTable, mutate: loadConstructorTable } = useFetchConstructorTable();
 
   const renderer = (constructor: Constructor) => <>
     <p><Link href={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link></p>
