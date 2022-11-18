@@ -2,10 +2,11 @@ import 'App.scss'
 import styles from './_app.module.scss'
 import Head from 'next/head';
 import NavLink from 'components/NavLink';
+import { SWRConfig } from "swr";
 
 export default function App({ Component, pageProps }: any) {
   return (
-    <>
+    <SWRConfig value={{ provider: localStorageProvider }}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Formula 1</title>
@@ -42,6 +43,17 @@ export default function App({ Component, pageProps }: any) {
       <footer className={styles.footer}>
         Copyright © 2021-2022 José Torres
       </footer>
-    </>
+    </SWRConfig>
   );
 }
+
+function localStorageProvider() {
+  if (typeof window === "undefined")
+    return new Map();
+  const map = new Map(JSON.parse(localStorage.getItem('app-cache') || '[]'))
+  window.addEventListener('beforeunload', () => {
+    const appCache = JSON.stringify(Array.from(map.entries()))
+    localStorage.setItem('app-cache', appCache)
+  })
+  return map;
+};
