@@ -8,11 +8,11 @@ export default function ListDriverCard({ driver, position, points, showNationali
   return <div className={styles.card} style={!showNationality ? { padding: "8px" } : {}}>
     <div className={styles.no}>
       <Link href={`/drivers/${driver.driverId}`} passHref={true}>
-        <a>{`#${position}`}</a>
+        {`#${position}`}
       </Link>
     </div>
     <div className="expand">
-      <Link href={`/drivers/${driver.driverId}`} passHref={true}><a>{`${driver.givenName} ${driver.familyName}${pointsText}`}</a></Link>
+      <Link href={`/drivers/${driver.driverId}`} passHref={true}>{`${driver.givenName} ${driver.familyName}${pointsText}`}</Link>
       {showNationality && <p>Nationality: {driver.nationality}</p>}
     </div>
   </div>

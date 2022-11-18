@@ -19,10 +19,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "incremental": true
   },
   "include": [
-    "next-env.d.ts", "src"
+    "next-env.d.ts",
+    "src"
   ],
   "exclude": [
     "node_modules"
