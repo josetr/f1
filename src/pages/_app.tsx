@@ -40,7 +40,7 @@ export default function App({ Component, pageProps }: any) {
         </main>
       </div>
       <footer className={styles.footer}>
-        Copyright (C) 2021 Jose Torres
+        Copyright © 2021-2022 José Torres
       </footer>
     </>
   );
