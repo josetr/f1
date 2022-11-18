@@ -3,10 +3,15 @@ import styles from './_app.module.scss'
 import Head from 'next/head';
 import NavLink from 'components/NavLink';
 import { SWRConfig } from "swr";
+import React, { ReactNode, Suspense } from "react";
+import { useRouter } from "next/router";
+import Error from "next/error";
 
 export default function App({ Component, pageProps }: any) {
+  const router = useRouter();
+
   return (
-    <SWRConfig value={{ provider: localStorageProvider }}>
+    <SWRConfig value={{ provider: localStorageProvider, suspense: true }}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Formula 1</title>
@@ -37,7 +42,11 @@ export default function App({ Component, pageProps }: any) {
       </header>
       <div className={styles.main_background}>
         <main className={styles.main}>
-          <Component {...pageProps} />
+          <ErrorBoundary key={router.pathname}>
+            <Suspense>
+              <Component {...pageProps} />
+            </Suspense>
+          </ErrorBoundary>
         </main>
       </div>
       <footer className={styles.footer}>
@@ -57,3 +66,22 @@ function localStorageProvider() {
   })
   return map;
 };
+
+
+class ErrorBoundary extends React.Component<{children: ReactNode}, {hasError: boolean}> {
+  constructor(props: {children: ReactNode}) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError)
+      return <h1>An error ocurred. <a href="" onClick={() => window.location.reload()}>Reload</a></h1>;
+
+    return this.props.children;
+  }
+}
