@@ -12,7 +12,7 @@ export interface ListProps<T> {
 }
 
 export default function List<T>({ data, renderer, keyExtractor, small }: ListProps<T>) {
-  return <div className="center" style={{ maxWidth: small ? "700px" : undefined }}>
-    <ul className={styles.list}>{r(data, renderer, keyExtractor)}</ul>
+  return <div>
+    <ul className={styles.list} style={{ maxWidth: small ? "700px" : undefined }}>{r(data, renderer, keyExtractor)}</ul>
   </div>
 }
