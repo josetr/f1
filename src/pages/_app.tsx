@@ -6,6 +6,7 @@ import { SWRConfig } from "swr";
 import React, { ReactNode, Suspense } from "react";
 import { useRouter } from "next/router";
 import Error from "next/error";
+import { Loading } from "components/Loading";
 
 export default function App({ Component, pageProps }: any) {
   const router = useRouter();
@@ -43,7 +44,7 @@ export default function App({ Component, pageProps }: any) {
       <div className={styles.main_background}>
         <main className={styles.main}>
           <ErrorBoundary key={router.pathname}>
-            <Suspense>
+            <Suspense fallback={<Loading />}>
               <Component {...pageProps} />
             </Suspense>
           </ErrorBoundary>
